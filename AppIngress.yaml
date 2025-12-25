@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  namespace: test
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+
+spec:
+  ingressClassName: nginx-prod
+  rules:
+  - http:
+      paths:
+      - path: /python(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+         service:
+          name: app-service
+          port:
+            number: 8000
